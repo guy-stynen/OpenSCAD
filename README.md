@@ -10,7 +10,7 @@ Drop-in organizer for the **front** centre-console bay with the sliding lid on a
 | Pocket | Sized for |
 |---|---|
 | **Card slot** | Credit / e-charge cards (ISO 85.6×54 mm), upright in a ~4 mm throat |
-| **Coin well** | Loose change (~44×44 mm) |
+| **Coin well** | Loose change (~44×44 mm) with a **sloping floor** (coins pool to the low edge for easy pinch) |
 | **Pen trough** | Pens / pencils along the cup-holder end (~14 mm wide) |
 | **Sunglasses bay** | Folded sunglasses in the main open area |
 
