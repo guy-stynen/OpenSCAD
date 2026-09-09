@@ -23,21 +23,21 @@ lip_inset_from_ends = 8.0;
 
 /* [Pockets — sized for real items] */
 // ISO credit card ≈ 85.6 × 54.0 × 0.76 mm
-card_slot_clearance = 2.5;     // extra width for 2–3 cards + finger
-card_slot_w = 54.0 + card_slot_clearance;  // cards stand on long edge
-card_slot_gap = 4.0;           // throat for stacked cards
-card_pocket_depth = 48;        // how far cards sit into the tray (Y)
+card_slot_clearance = 2.5;
+card_slot_w = 54.0 + card_slot_clearance;
+card_slot_gap = 4.0;
+card_pocket_depth = 48;
 
-// Coin well — euros / mixed change
-coin_well_w = 44;
-coin_well_d = 44;
-coin_ramp_rise = 10;           // floor rises this much — coins slide to the low edge
+// Coin dish — round well + finger scoop (better than a flat ramp)
+coin_dish_d = 42;              // inner bowl diameter
+coin_dish_depth = 12;          // how deep the bowl sinks below the floor top
+coin_rim_h = 3;                // raised lip around the bowl (keeps coins in while driving)
+coin_scoop_w = 22;             // finger notch width toward the sunglasses bay
+coin_scoop_drop = 8;           // how much the scoop lowers the rim
 
-// Pen trough — typical pen ~140 × Ø10 mm (along tray width)
+// Pen trough — typical pen ~140 × Ø10 mm
 pen_trough_w = 14;
 pen_trough_clearance = 2;
-
-// Sunglasses bay uses remaining space (folded frames ~140 × 55–65 mm)
 
 divider = 1.8;
 cable_notch_w = 18;
@@ -45,9 +45,9 @@ cable_notch_d = 12;
 cable_notch_h = 14;
 
 /* [Quality] */
-$fn = 48;
+$fn = 64;
 
-function left_col_w() = max(card_slot_w, coin_well_w) + divider;
+function left_col_w() = max(card_slot_w, coin_dish_d + 6) + divider;
 
 module rounded_rect(size, r) {
     x = size[0]; y = size[1]; z = size[2];
@@ -85,19 +85,17 @@ module shell() {
     }
 }
 
-// Layout (top view, +Y toward screen / wireless pad, −Y toward cup holders):
+// Layout (top view, +Y toward screen, −Y toward cup holders):
 //
-//  +Y (screen)
 //  ┌──────────┬─────────────────────────┐
 //  │  cards   │                         │
 //  │  (slot)  │      sunglasses         │
 //  ├──────────┤                         │
-//  │  coins   │                         │
-//  │  (ramp)  │                         │
+//  │  ◕ coins │  ← finger scoop here    │
+//  │  (dish)  │                         │
 //  ├──────────┴─────────────────────────┤
-//  │           pens (full width)        │
+//  │           pens                     │
 //  └────────────────────────────────────┘
-//  −Y (cup holders / USB)
 
 module dividers() {
     inner_w = overall_w - 2*wall;
@@ -105,17 +103,14 @@ module dividers() {
     h = overall_h - floor_t - 0.2;
     lc = left_col_w();
 
-    // Pen trough along the cup-holder end (−Y), full inner width
     translate([0, -overall_l/2 + wall + pen_trough_w, floor_t + h/2])
         cube([inner_w, divider, h], center = true);
 
-    // Vertical wall: left column (cards+coins) vs sunglasses bay
     left_wall_len = inner_l - pen_trough_w - divider;
     left_wall_y = overall_l/2 - wall - left_wall_len/2;
     translate([-overall_w/2 + wall + lc, left_wall_y, floor_t + h/2])
         cube([divider, left_wall_len, h], center = true);
 
-    // Split cards (toward +Y) from coins (toward pens)
     split_y = overall_l/2 - wall - card_pocket_depth;
     translate([
         -overall_w/2 + wall + lc/2,
@@ -124,7 +119,6 @@ module dividers() {
     ])
         cube([lc, divider, h], center = true);
 
-    // Thin throat walls for the card slot
     card_centre_x = -overall_w/2 + wall + lc/2;
     card_centre_y = overall_l/2 - wall - card_pocket_depth/2;
     throat_wall = 1.2;
@@ -139,30 +133,54 @@ module dividers() {
     }
 }
 
-// Sloping coin floor: high at the outer (−X) wall, low at the sunglasses
-// divider — coins pool at the low edge so you can pinch them easily.
-module coin_ramp() {
-    lc = left_col_w();
-    well_w = lc - divider;                          // clear width inside left column
-    split_y = overall_l/2 - wall - card_pocket_depth;
-    y_hi = split_y - divider/2;                     // under card split
-    y_lo = -overall_l/2 + wall + pen_trough_w + divider/2;
-    well_d = y_hi - y_lo;
-    rise = coin_ramp_rise;
+// Centre of the coin pocket (left column, under the card split)
+function coin_centre() =
+    let (
+        lc = left_col_w(),
+        split_y = overall_l/2 - wall - card_pocket_depth,
+        y_lo = -overall_l/2 + wall + pen_trough_w + divider,
+        y_hi = split_y - divider/2,
+        cx = -overall_w/2 + wall + (lc - divider)/2,
+        cy = (y_lo + y_hi) / 2
+    )
+    [cx, cy];
 
-    // Origin at outer-left corner of the coin pocket, on top of the floor
-    x0 = -overall_w/2 + wall;
-    y0 = y_lo;
+// Round dish: hemispherical-ish bowl + raised rim, with a finger scoop
+// cut toward the sunglasses bay (+X) so you can dip and scoop.
+module coin_dish() {
+    c = coin_centre();
+    cx = c[0];
+    cy = c[1];
+    r = coin_dish_d / 2;
+    rim_r = r + 2.5;
 
-    // Hull a tall thin slab on the outer wall down to a flat sliver on the inner edge
-    translate([x0, y0, floor_t])
-        hull() {
-            // High edge (outer wall, −X)
-            cube([0.2, well_d, rise]);
-            // Low edge (toward sunglasses / +X) — almost flush with floor
-            translate([well_w - 0.2, 0, 0])
-                cube([0.2, well_d, 0.2]);
+    // Build solid rim + floor pad, then carve the bowl and scoop
+    difference() {
+        union() {
+            // Raised rim ring (sits on the tray floor)
+            translate([cx, cy, floor_t])
+                cylinder(h = coin_rim_h, r = rim_r);
+            // Extra floor pad under the dish so we can carve below floor_t
+            // without punching through the tray bottom
+            translate([cx, cy, 0])
+                cylinder(h = floor_t + 0.01, r = rim_r);
         }
+
+        // Bowl cavity — spherical cap for a smooth scooping surface
+        translate([cx, cy, floor_t + coin_rim_h])
+            sphere(r = r);
+        // Flatten anything above the rim (sphere would stick up)
+        translate([cx, cy, floor_t + coin_rim_h + r/2])
+            cube([rim_r*2 + 2, rim_r*2 + 2, r], center = true);
+
+        // Ensure bowl reaches down to coin_dish_depth below floor top
+        translate([cx, cy, floor_t - coin_dish_depth])
+            cylinder(h = coin_dish_depth + coin_rim_h + 0.1, r1 = r * 0.35, r2 = r);
+
+        // Finger scoop — lower the rim toward +X (sunglasses side)
+        translate([cx + r * 0.55, cy, floor_t + coin_rim_h - coin_scoop_drop])
+            cube([coin_scoop_w, coin_scoop_w * 0.9, coin_scoop_drop + coin_rim_h + 1], center = true);
+    }
 }
 
 module cable_notch() {
@@ -176,7 +194,7 @@ difference() {
     union() {
         shell();
         dividers();
-        coin_ramp();
+        coin_dish();
     }
     cable_notch();
 }
