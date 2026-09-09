@@ -31,6 +31,7 @@ card_pocket_depth = 48;        // how far cards sit into the tray (Y)
 // Coin well — euros / mixed change
 coin_well_w = 44;
 coin_well_d = 44;
+coin_ramp_rise = 10;           // floor rises this much — coins slide to the low edge
 
 // Pen trough — typical pen ~140 × Ø10 mm (along tray width)
 pen_trough_w = 14;
@@ -45,6 +46,8 @@ cable_notch_h = 14;
 
 /* [Quality] */
 $fn = 48;
+
+function left_col_w() = max(card_slot_w, coin_well_w) + divider;
 
 module rounded_rect(size, r) {
     x = size[0]; y = size[1]; z = size[2];
@@ -90,6 +93,7 @@ module shell() {
 //  │  (slot)  │      sunglasses         │
 //  ├──────────┤                         │
 //  │  coins   │                         │
+//  │  (ramp)  │                         │
 //  ├──────────┴─────────────────────────┤
 //  │           pens (full width)        │
 //  └────────────────────────────────────┘
@@ -99,38 +103,30 @@ module dividers() {
     inner_w = overall_w - 2*wall;
     inner_l = overall_l - 2*wall;
     h = overall_h - floor_t - 0.2;
-
-    // Left column width = max(card slot, coin well) + walls
-    left_col_w = max(card_slot_w, coin_well_w) + divider;
+    lc = left_col_w();
 
     // Pen trough along the cup-holder end (−Y), full inner width
-    pen_y = -overall_l/2 + wall + pen_trough_w/2;
     translate([0, -overall_l/2 + wall + pen_trough_w, floor_t + h/2])
         cube([inner_w, divider, h], center = true);
 
     // Vertical wall: left column (cards+coins) vs sunglasses bay
-    // Runs from pen trough up to +Y end
     left_wall_len = inner_l - pen_trough_w - divider;
     left_wall_y = overall_l/2 - wall - left_wall_len/2;
-    translate([-overall_w/2 + wall + left_col_w, left_wall_y, floor_t + h/2])
+    translate([-overall_w/2 + wall + lc, left_wall_y, floor_t + h/2])
         cube([divider, left_wall_len, h], center = true);
 
     // Split cards (toward +Y) from coins (toward pens)
-    // Cards occupy card_pocket_depth from the +Y inner wall
     split_y = overall_l/2 - wall - card_pocket_depth;
     translate([
-        -overall_w/2 + wall + left_col_w/2,
+        -overall_w/2 + wall + lc/2,
         split_y,
         floor_t + h/2
     ])
-        cube([left_col_w, divider, h], center = true);
+        cube([lc, divider, h], center = true);
 
-    // Thin throat walls for the card slot (keeps cards upright)
-    // Slot centred in the card pocket, gap = card_slot_gap
-    card_centre_x = -overall_w/2 + wall + left_col_w/2;
+    // Thin throat walls for the card slot
+    card_centre_x = -overall_w/2 + wall + lc/2;
     card_centre_y = overall_l/2 - wall - card_pocket_depth/2;
-    // Two thin walls forming a 4 mm gap down the middle of the card pocket
-    // (only if left column is wider than the gap + walls)
     throat_wall = 1.2;
     half_gap = card_slot_gap / 2;
     for (sx = [-1, 1]) {
@@ -141,6 +137,32 @@ module dividers() {
         ])
             cube([throat_wall, card_pocket_depth - 1, h], center = true);
     }
+}
+
+// Sloping coin floor: high at the outer (−X) wall, low at the sunglasses
+// divider — coins pool at the low edge so you can pinch them easily.
+module coin_ramp() {
+    lc = left_col_w();
+    well_w = lc - divider;                          // clear width inside left column
+    split_y = overall_l/2 - wall - card_pocket_depth;
+    y_hi = split_y - divider/2;                     // under card split
+    y_lo = -overall_l/2 + wall + pen_trough_w + divider/2;
+    well_d = y_hi - y_lo;
+    rise = coin_ramp_rise;
+
+    // Origin at outer-left corner of the coin pocket, on top of the floor
+    x0 = -overall_w/2 + wall;
+    y0 = y_lo;
+
+    // Hull a tall thin slab on the outer wall down to a flat sliver on the inner edge
+    translate([x0, y0, floor_t])
+        hull() {
+            // High edge (outer wall, −X)
+            cube([0.2, well_d, rise]);
+            // Low edge (toward sunglasses / +X) — almost flush with floor
+            translate([well_w - 0.2, 0, 0])
+                cube([0.2, well_d, 0.2]);
+        }
 }
 
 module cable_notch() {
@@ -154,6 +176,7 @@ difference() {
     union() {
         shell();
         dividers();
+        coin_ramp();
     }
     cable_notch();
 }
