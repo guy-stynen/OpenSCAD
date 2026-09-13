@@ -46,3 +46,30 @@ Tune `overall_w` / `overall_l` / `overall_h` (and the pocket params) at the top 
 
 ### Export STL
 Open in OpenSCAD → **F6** (Render) → **File → Export → Export as STL**.
+
+## Orbital Engine Mk.I
+
+File: `orbital_engine.scad`
+
+Print-in-place **planetary gear fidget** for a FlashForge Adventurer 4 — no glue, no screws. Spin the centre knob; the planet gears orbit the other way. Instant “whoa.”
+
+### Why it’s cool
+- Comes off the bed already assembled
+- Real epicyclic gear train (sun · planets · ring)
+- Sci-fi housing with armour fins and a jewel knob
+
+### Print (Adventurer 4)
+| Setting | Value |
+|---|---|
+| Build volume needed | ~Ø120 mm × ~25 mm tall (bed is 220×200×250) |
+| Material | PLA or silk PLA |
+| Layer height | 0.2 mm |
+| Walls | 3 |
+| Infill | 20% |
+| Supports | **None** |
+| Bed / nozzle | ~55 °C / ~205 °C |
+
+After printing, gently twist the knob back and forth until motion frees up, then spin.
+
+If gears feel tight, increase `backlash` (try `0.55`) and reprint — Adventurer 4s vary a little.
+
