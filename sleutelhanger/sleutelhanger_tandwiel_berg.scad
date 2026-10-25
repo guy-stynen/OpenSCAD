@@ -1,7 +1,7 @@
 // ============================================================================
-//  Sleutelhanger: kettingblad-tandwiel met bergsilhouet
+//  Sleutelhanger: kettingblad-tandwiel met bergsilhouet en mountainbiker
 //  Ca. 42 x 48 mm, 4 mm dik – past makkelijk in een broekzak.
-//  De lucht is open (doorkijk), de bergen zijn massief met verdiepte sneeuwkappen.
+//  De lucht is open (doorkijk), bergen met verdiepte sneeuwkappen en mountainbiker.
 //  Printer: FlashForge Adventurer 4 · PLA/PETG · 0.2 mm · 100% infill aanbevolen
 //  Printoriëntatie: plat, geen support.
 //  Tip: pauzeer de print op 3,2 mm en wissel van kleur voor kleurige bergtoppen.
@@ -51,9 +51,32 @@ module sneeuw_2d() {
 }
 // Kronkelend pad (mountainbike-trail) naar beneden
 module trail_2d() {
-    pts = [for (t=[0:0.05:1]) [ -2 + 6*sin(t*540) * (1-t*0.3), 6 - t*21 ]];
+    pts = [for (t=[0:0.05:1]) [ -1 + 4*sin(t*360), 6.2 - t*2.6 ]];
     for (i=[0:len(pts)-2]) hull() { translate(pts[i]) circle(r=0.55,$fn=12); translate(pts[i+1]) circle(r=0.55,$fn=12); }
 }
+// Mountainbike met renner (lijnen van lijn_b breed)
+lijn_b = 0.85;
+module lijn(a, b) { hull() { translate(a) circle(d=lijn_b,$fn=12); translate(b) circle(d=lijn_b,$fn=12); } }
+module mtb_2d() {
+    achter = [-5, 0]; voor = [5, 0]; trapas = [-0.3, 0.2];
+    zadel = [-1.8, 4.6]; balhoofd = [3.4, 4.4]; stuur = [3.0, 5.9];
+    schouder = [1.0, 8.4]; knie = [1.6, 3.6];
+    // wielen (met dikke banden)
+    for (w = [achter, voor]) translate(w) difference() { circle(r=3.3,$fn=40); circle(r=3.3-lijn_b-0.25,$fn=40); }
+    // frame
+    lijn(achter, trapas); lijn(trapas, zadel); lijn(zadel, achter);
+    lijn(zadel, balhoofd); lijn(trapas, balhoofd); lijn(balhoofd, voor); lijn(balhoofd, stuur);
+    // renner
+    lijn(zadel + [0, 0.5], schouder);          // romp
+    lijn(schouder, stuur);                     // arm
+    lijn(zadel + [0, 0.5], knie); lijn(knie, trapas);   // been
+    translate(schouder + [1.1, 1.5]) circle(r=1.25,$fn=24);  // hoofd met helm
+    // grond onder de wielen
+    lijn([-10, -3.75], [10, -3.75]);
+}
+bike_pos   = [0.5, -8.2];
+bike_schaal = 1.0;
+
 // Zon in de lucht
 module zon_2d() { translate([-7.6, 10.3]) circle(r = 2.6); }
 
@@ -80,7 +103,7 @@ module sleutelhanger() {
         translate([0, buiten_d/2 + 2.5, -1]) cylinder(d = ring_gat, h = dikte + 2);
         // Sneeuwkappen en trail verdiept
         translate([0, 0, dikte - relief]) linear_extrude(relief + 1) {
-            intersection() { circle(r = binnen_r); union() { sneeuw_2d(); trail_2d(); } }
+            intersection() { circle(r = binnen_r); union() { sneeuw_2d(); translate(bike_pos) scale(bike_schaal) mtb_2d(); } }
         }
     }
 }
