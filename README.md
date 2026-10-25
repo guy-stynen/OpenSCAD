@@ -83,6 +83,10 @@ If gears feel tight, increase `backlash` (try `0.55`) and reprint — Adventurer
 
 ![Preview](gedenkplaat/preview.png)
 
+**Minimalistische versie:** `gedenkplaat/gedenkplaat_standaard_minimal.scad` – vooraan enkel een lipje van 2 mm, verder een lage achterwand (25 mm) en twee driehoekige steunpoten die volledig achter de plaat verstopt zitten. Ca. 23 cm³ (≈ 28 g PLA).
+
+![Minimal](gedenkplaat/preview_minimal.png)
+
 ## Grid 14 × 15 cm
 
 `grid/grid_14x15.scad` – open grid van 140 × 150 × 10 mm. De verdeling wordt automatisch berekend rond een doelmaat van 20 mm: 7 × 8 vakken (20 × 18,75 mm hart-op-hart, openingen 17,7 × 16,5 mm) met ribben van 2 mm.
