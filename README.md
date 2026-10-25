@@ -73,3 +73,12 @@ After printing, gently twist the knob back and forth until motion frees up, then
 
 If gears feel tight, increase `backlash` (try `0.55`) and reprint — Adventurer 4s vary a little.
 
+
+## Gedenkplaat-standaard (Roc du Maroc)
+
+`gedenkplaat/gedenkplaat_standaard.scad` – 120 mm brede standaard voor een plaat van 200 mm breed met een bolle voorkant (15 mm dik in het midden, 7 mm aan de rand, in een boog). De plaat leunt 10° achterover; de gleuf volgt de boog met 0,6 mm speling. De voorste lip is 2 mm hoog zodat de letters (2,5 mm boven de onderrand) zichtbaar blijven.
+
+- Printen: plat op de onderkant, geen support, PLA/PETG, 0,2 mm, 3 wanden, 20% infill.
+- Parameters: `speling`, `lip_h`, `hoek`, `rug_h`, `breedte`.
+
+![Preview](gedenkplaat/preview.png)
