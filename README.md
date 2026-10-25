@@ -95,3 +95,12 @@ If gears feel tight, increase `backlash` (try `0.55`) and reprint — Adventurer
 - Parameters: `doel_vak`, `wand`, `rand`, `dikte`.
 
 ![Preview](grid/preview.png)
+
+## Sleutelhanger: tandwiel met bergen
+
+`sleutelhanger/sleutelhanger_tandwiel_berg.scad` – kettingblad-tandwiel (Ø 40 mm, 22 afgeronde tanden) met bergsilhouet, zon, verdiepte sneeuwkappen en een kronkelend MTB-pad. Open lucht als doorkijk. 40 × 48 × 4 mm, oog met gat van 5 mm.
+
+- Printen: plat, geen support, 100% infill.
+- Tip: pauze op 3,2 mm voor een tweede kleur in sneeuwkappen en pad.
+
+![Preview](sleutelhanger/preview.png)
