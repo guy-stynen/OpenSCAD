@@ -104,3 +104,21 @@ If gears feel tight, increase `backlash` (try `0.55`) and reprint — Adventurer
 - Tip: pauze op 3,2 mm voor een tweede kleur in sneeuwkappen en mountainbiker.
 
 ![Preview](sleutelhanger/preview.png)
+
+## LEGO achtbaan-looping
+
+Map: [`lego_looping/`](lego_looping/)
+
+Parametrische verticale **looping voor het LEGO roller-coaster railsysteem** (10261 / 10303 / 31084).
+Zelfde principe als de officiële 10303-looping: **4 identieke kwartstukken** met elk 2 noppen zijwaartse
+verschuiving, LEGO-compatibele railuiteinden (2 noppen + anti-nop, verbinden met een 2×2 plaat),
+plus een base, twee zijframes met schuifpads en een joiner bovenaan als ondersteuning.
+
+- Looping 192 × 192 mm, in- en uitgang 64 mm (8 noppen) naast elkaar
+- Elk onderdeel past op de FlashForge Adventurer 4; kwartstukken worden op hun zijkant geprint
+- Tolerantie instelbaar (`fit_tol` 0,15 mm standaard) – **print eerst `test_set`** om de pasvorm te checken
+- PLA, 0,2 mm, 3–4 wanden, 20–30 % infill, supports alleen vanaf bed onder de onderste rail
+
+Zie [`lego_looping/README.md`](lego_looping/README.md) voor onderdelen, opbouw en risico's.
+
+![LEGO looping](lego_looping/preview/lego_looping_assembly_persp_v1.png)
