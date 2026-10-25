@@ -82,3 +82,12 @@ If gears feel tight, increase `backlash` (try `0.55`) and reprint — Adventurer
 - Parameters: `speling`, `lip_h`, `hoek`, `rug_h`, `breedte`.
 
 ![Preview](gedenkplaat/preview.png)
+
+## Grid 14 × 15 cm
+
+`grid/grid_14x15.scad` – open grid van 140 × 150 × 10 mm. De verdeling wordt automatisch berekend rond een doelmaat van 20 mm: 7 × 8 vakken (20 × 18,75 mm hart-op-hart, openingen 17,7 × 16,5 mm) met ribben van 2 mm.
+
+- Printen: plat, geen support, PLA/PETG, 0,2 mm.
+- Parameters: `doel_vak`, `wand`, `rand`, `dikte`.
+
+![Preview](grid/preview.png)
