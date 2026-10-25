@@ -16,7 +16,6 @@ speling         = 0.6;   // ruimte rondom de plaat in de gleuf
 /* [Standaard] */
 breedte         = 120;   // totale breedte
 hoek            = 10;    // graden achterover
-voet_diepte     = 70;    // voor-achter
 voet_h          = 5;     // dikte voetplaat (= bodem van de gleuf)
 lip_h           = 2;     // hoogte voorste lip boven de gleufbodem (letters staan op 2,5 mm van de onderrand)
 lip_wand        = 4;     // dikte voorste lip
@@ -24,6 +23,13 @@ rug_h           = 45;    // hoogte achtersteun boven de gleufbodem
 rug_dik         = 6;
 rug_breedte     = 90;
 afronding       = 4;
+
+/* [Lichtgewicht] */
+voet_voor       = 27;    // hoe ver de voet voor de achterkant van de plaat loopt
+voet_achter     = 35;    // hoe ver de voet achter de plaat loopt
+kader           = 6;     // breedte van het materiaal rond de uitsparingen
+middenrib       = 8;     // rib in het midden van de voet-uitsparing
+rug_kader       = 9;     // rand rond het venster in de achtersteun
 
 $fn = 96;
 
@@ -59,7 +65,8 @@ module standaard() {
         intersection() {
             union() {
                 // Voetplaat
-                translate([0, 0, 0]) afgerond_blok(breedte, voet_diepte, voet_h, afronding);
+                translate([0, (voet_achter - voet_voor)/2, 0])
+                    afgerond_blok(breedte, voet_voor + voet_achter, voet_h, afronding);
                 // Voorste lip die de boog volgt
                 kantel() translate([0,0,-voet_h-2])
                     linear_extrude(lip_h + voet_h + 2)
@@ -74,12 +81,25 @@ module standaard() {
                     }
             }
             // Niets onder de tafel en niet breder dan de standaard
-            translate([-breedte/2, -voet_diepte/2, 0]) cube([breedte, voet_diepte, 200]);
+            translate([-breedte/2, -voet_voor, 0]) cube([breedte, voet_voor + voet_achter, 200]);
         }
+        // Uitsparingen in de voet achter de steun (twee vensters met middenrib)
+        venster_y0 = rug_dik + speling + voet_h + 4;          // net achter de voet van de steun
+        venster_d  = voet_achter - kader - venster_y0;
+        venster_b  = (breedte - 2*kader - middenrib) / 2;
+        for (sx=[-1,1])
+            translate([sx*(middenrib/2 + venster_b/2), venster_y0 + venster_d/2, -1])
+                afgerond_blok(venster_b, venster_d, voet_h + 2, 4);
+        // Venster in de achtersteun
+        kantel() translate([0, -1, rug_kader])
+            rotate([-90,0,0]) linear_extrude(rug_dik + speling + 2)
+                offset(r=6) offset(delta=-6)
+                    translate([-(rug_breedte/2 - rug_kader), -(rug_h - rug_kader)])
+                        square([rug_breedte - 2*rug_kader, rug_h - 2*rug_kader]);
         // De gleuf zelf
         kantel() linear_extrude(300) plaat_2d(extra = speling, xmax = half + 5);
     }
 }
 
-// Voet loopt 35 mm voor en achter de plaat: stabiel bij 10 graden
+// Lichtgewicht: kortere voorkant, vensters in voet en achtersteun
 standaard();
