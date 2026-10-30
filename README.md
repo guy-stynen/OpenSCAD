@@ -145,6 +145,10 @@ tanden, rugstekels en een pijlvormige staartpunt. Wordt **in één keer plat gep
 
 ![Flexi draak v3](flexi_draak/prev_v3_persp.png)
 
+- **Versie 4 – langere snuit**: [`flexi_draak_v4.scad`](flexi_draak/flexi_draak_v4.scad) / `flexi_draak_v4.stl` – zoals v3, maar met een ca. 6 mm langere, brede ronde snuit (neusgaatjes aan de nieuwe punt) en voorpootjes iets naar achteren voor speling met de kop. Geschaald naar ca. 100 mm, geen supports, `clr` 0,4 mm.
+
+![Flexi draak v4](flexi_draak/prev_v4_persp.png)
+
 ![Flexi draak](flexi_draak/prev_persp_v2.png)
 
 ![Flexi draak schattig](flexi_draak/prev_schattig_persp_v2.png)
