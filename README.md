@@ -141,6 +141,10 @@ tanden, rugstekels en een pijlvormige staartpunt. Wordt **in één keer plat gep
 
 - **Schattige versie** (kawaii): [`flexi_draak_schattig.scad`](flexi_draak/flexi_draak_schattig.scad) / `flexi_draak_schattig_v2.stl` – grote ronde kop, grote ogen met glimlichtje, glimlach, ronde hoorntjes, bolletjes op de rug, teenkussentjes, ronde vleugeltjes en een hartjesstaart. Zelfde scharnieren en printinstellingen.
 
+- **Versie 3 – 'chubby' 3D-stijl** (geïnspireerd op *Articulated Flexi Cute Dragon* van MiniStudio, eigen geometrie): [`flexi_draak_v3.scad`](flexi_draak/flexi_draak_v3.scad) / `flexi_draak_v3.stl` – grote ronde kop met grote bolle ogen, geribde gebogen hoorntjes, mollig lijf, rechtopstaande vleugeltjes, dikke pootjes met teentjes en een segmentstaart. Rechtop geprint op de buik (ca. 100 × 39 × 32 mm), geen supports, `clr` 0,4 mm. Test eerst `test_joint_v3.stl`. Tip: ogen achteraf zwart stiften.
+
+![Flexi draak v3](flexi_draak/prev_v3_persp.png)
+
 ![Flexi draak](flexi_draak/prev_persp_v2.png)
 
 ![Flexi draak schattig](flexi_draak/prev_schattig_persp_v2.png)
