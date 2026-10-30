@@ -139,4 +139,8 @@ tanden, rugstekels en een pijlvormige staartpunt. Wordt **in één keer plat gep
   (eventueel brim uit), 200–205 °C, bed 50 °C, eerste laag niet te hard ingedrukt (anders vergroeien de delen)
 - Na het printen elk scharnier voorzichtig heen en weer buigen om het los te breken
 
+- **Schattige versie** (kawaii): [`flexi_draak_schattig.scad`](flexi_draak/flexi_draak_schattig.scad) / `flexi_draak_schattig_v2.stl` – grote ronde kop, grote ogen met glimlichtje, glimlach, ronde hoorntjes, bolletjes op de rug, teenkussentjes, ronde vleugeltjes en een hartjesstaart. Zelfde scharnieren en printinstellingen.
+
 ![Flexi draak](flexi_draak/prev_persp_v2.png)
+
+![Flexi draak schattig](flexi_draak/prev_schattig_persp_v2.png)
