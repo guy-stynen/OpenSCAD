@@ -122,3 +122,21 @@ plus een base, twee zijframes met schuifpads en een joiner bovenaan als onderste
 Zie [`lego_looping/README.md`](lego_looping/README.md) voor onderdelen, opbouw en risico's.
 
 ![LEGO looping](lego_looping/preview/lego_looping_assembly_persp_v1.png)
+
+## Flexi draakje (print-in-place)
+
+Map: [`flexi_draak/`](flexi_draak/)
+
+Beweegbaar **flexi-draakje van 10 cm** (neus tot staartpunt) met vleugels, hoorntjes, oogkassen,
+tanden, rugstekels en een pijlvormige staartpunt. Wordt **in één keer plat geprint, zonder supports**.
+
+- 8 losse delen in één print: kop, nek, borst (vleugels + voorpoten), heup (achterpoten) en 4 staartsegmenten
+- Scharnieren: verticale pen met verdikking (45° kegels) in een gesloten kom met sleuf, speling `clr` = 0,4 mm;
+  elk scharnier draait ca. ±22° zijwaarts
+- Parameters: `len_total` (lengte), `clr` (speling), `th` (dikte), `nt` (aantal staartsegmenten)
+- **Print eerst `test_joint_v2.stl`**: beweegt het niet los na het printen, verhoog `clr` naar 0,45–0,5
+- FlashPrint: PLA, laag 0,2 mm (eerste laag 0,2–0,3 mm), 2 wanden, 15–20 % infill, geen supports, geen raft
+  (eventueel brim uit), 200–205 °C, bed 50 °C, eerste laag niet te hard ingedrukt (anders vergroeien de delen)
+- Na het printen elk scharnier voorzichtig heen en weer buigen om het los te breken
+
+![Flexi draak](flexi_draak/prev_persp_v2.png)
